@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "aws": "^0.0.3-2",
+    "aws-cdk": "^2.81.0",
+    "aws-cli": "^0.0.2",
+    "aws-sdk": "^2.1386.0",
+    "fs": "^0.0.1-security"
+  }
+}
