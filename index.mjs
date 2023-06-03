@@ -1,23 +1,21 @@
 import AWS from 'aws-sdk';
-const s3 = new AWS.S3();
+import process from 'process';
 
 // AWS 구성
 AWS.config.update({
   accessKeyId: process.env.ACCESS_KEY,
-  secretAccessKey: process.env.SECRETACCESS_KEY,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
   region: process.env.REGION
 });
 
+const s3 = new AWS.S3();
+
 export const handler = async (event) => {
-
-  console.log(event)
-
-  const base64Image = event.imagedata;
-  const key = event.resouce
+  const base64Image = event.imageData;
+  const key = event.resource
 
   // Base64 디코딩
   const imageBuffer = Buffer.from(base64Image, 'base64');
-  console.log("디코딩 잘됬어요");
 
   try {
     // S3 업로드 설정
@@ -27,7 +25,6 @@ export const handler = async (event) => {
       Body: imageBuffer,
       ContentType: 'image/jpeg' // 이미지 파일의 MIME 유형에 맞게 변경
     };
-    console.log("파라미터 잘됬어요");
 
     // S3로 파일 업로드
     const uploadResult = await s3.upload(params).promise();
@@ -35,7 +32,7 @@ export const handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: uploadResult.Location })
+      body: { url: uploadResult.Location }
     };
   } catch (err) {
     console.error('Error reading or uploading file:', err);
